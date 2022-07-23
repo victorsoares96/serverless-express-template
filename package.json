@@ -27,7 +27,7 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:generate -d src/database/index.ts",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
-    "postbuild": "cp -R src/views dist/ && cp package*json dist/ && cp -R src/assets dist/ ",
+    "postbuild": "npm set-script prepare '' && cp -R src/views dist/ && cp package*json dist/ && cp -R src/assets dist/ && npm set-script prepare 'husky install'",
     "test": "cross-env NODE_ENV=test mocha",
     "test:watch": "npm test -- -- -w",
     "test:coverage": "jest",
