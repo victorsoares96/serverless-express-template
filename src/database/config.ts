@@ -30,8 +30,8 @@ const production: DataSourceOptions = {
   },
   synchronize: false,
   logging: false,
-  entities: ['entities/*.js'],
-  migrations: ['database/migrations/*.js'],
+  entities: ['entities/*.js', 'dist/entities/*.js'],
+  migrations: ['database/migrations/*.js', 'dist/database/migrations/*.js'],
   subscribers: [],
 };
 
