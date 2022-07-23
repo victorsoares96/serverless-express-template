@@ -1,0 +1,6 @@
+/*.js
+coverage
+node_modules
+dist
+src/shared/infra/typeorm/migrations/*.ts
+.github/workflows
