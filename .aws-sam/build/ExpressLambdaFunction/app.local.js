@@ -1,8 +1,10 @@
-"use strict";
+'use strict';
 
-var _app = _interopRequireDefault(require("./app"));
+var _app = _interopRequireDefault(require('./app'));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 const port = 3333;
 

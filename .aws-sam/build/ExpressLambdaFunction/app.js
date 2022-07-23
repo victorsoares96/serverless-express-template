@@ -1,29 +1,33 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+Object.defineProperty(exports, '__esModule', {
+  value: true,
 });
 exports.default = void 0;
 
-require("reflect-metadata");
+require('reflect-metadata');
 
-var _cors = _interopRequireDefault(require("cors"));
+var _cors = _interopRequireDefault(require('cors'));
 
-var _express = _interopRequireDefault(require("express"));
+var _express = _interopRequireDefault(require('express'));
 
-require("express-async-errors");
+require('express-async-errors');
 
-var _compression = _interopRequireDefault(require("compression"));
+var _compression = _interopRequireDefault(require('compression'));
 
-var _errorHandler = require("./middlewares/errorHandler.middleware");
+var _errorHandler = require('./middlewares/errorHandler.middleware');
 
-var _handleConnectionToDatabase = _interopRequireDefault(require("./middlewares/handleConnectionToDatabase.middleware"));
+var _handleConnectionToDatabase = _interopRequireDefault(
+  require('./middlewares/handleConnectionToDatabase.middleware'),
+);
 
-var _users = require("./routes/users.routes");
+var _users = require('./routes/users.routes');
 
-var _authenticate = require("./routes/authenticate.routes");
+var _authenticate = require('./routes/authenticate.routes');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 class App {
   constructor() {
@@ -32,13 +36,17 @@ class App {
     this.express.use((0, _compression.default)());
     this.express.use((0, _cors.default)());
     this.express.use(_express.default.json());
-    this.express.use(_express.default.json({
-      limit: '5mb'
-    }));
-    this.express.use(_express.default.urlencoded({
-      limit: '5mb',
-      extended: true
-    }));
+    this.express.use(
+      _express.default.json({
+        limit: '5mb',
+      }),
+    );
+    this.express.use(
+      _express.default.urlencoded({
+        limit: '5mb',
+        extended: true,
+      }),
+    );
     this.routeLevelMiddlewares();
     this.routes();
     this.errorHandlerMiddlewares();
@@ -56,7 +64,6 @@ class App {
     this.express.use(_authenticate.authenticateRouter);
     this.express.use(_users.usersRouter);
   }
-
 }
 
 var _default = new App().express;

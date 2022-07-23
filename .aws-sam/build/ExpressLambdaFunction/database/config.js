@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+Object.defineProperty(exports, '__esModule', {
+  value: true,
 });
 exports.default = void 0;
 
-require("dotenv/config");
+require('dotenv/config');
 
 const development = {
   type: process.env.DB_TYPE,
@@ -15,13 +15,13 @@ const development = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   ssl: {
-    rejectUnauthorized: false
+    rejectUnauthorized: false,
   },
   synchronize: false,
   logging: false,
   entities: ['src/entities/*.ts'],
   migrations: ['src/database/migrations/*.ts'],
-  subscribers: []
+  subscribers: [],
 };
 const production = {
   type: process.env.DB_TYPE,
@@ -31,15 +31,16 @@ const production = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   ssl: {
-    rejectUnauthorized: false
+    rejectUnauthorized: false,
   },
   synchronize: false,
   logging: false,
   entities: ['entities/*.js'],
   migrations: ['database/migrations/*.js'],
-  subscribers: []
+  subscribers: [],
 };
 
-var _default = process.env.NODE_ENV === 'development' ? development : production;
+var _default =
+  process.env.NODE_ENV === 'development' ? development : production;
 
 exports.default = _default;

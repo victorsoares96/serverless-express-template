@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+Object.defineProperty(exports, '__esModule', {
+  value: true,
 });
 exports.authenticateRouter = void 0;
 
-var _express = require("express");
+var _express = require('express');
 
-var _authenticate = require("../controllers/authenticate.controller");
+var _authenticate = require('../controllers/authenticate.controller');
 
 const authenticateRouter = (0, _express.Router)();
 exports.authenticateRouter = authenticateRouter;

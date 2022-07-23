@@ -17,9 +17,11 @@ and have the latest version of the [AWS CLI](https://aws.amazon.com/cli/) and
 installed.
 
 1. From your preferred project directory:
-  ```sh
-    git clone https://github.com/vendia/serverless-express.git && cd serverless-express/examples/basic-starter-api-gateway-v2-typescript
-  ```
+
+```sh
+  git clone https://github.com/vendia/serverless-express.git && cd serverless-express/examples/basic-starter-api-gateway-v2-typescript
+```
+
 1. Update the `config` section of `package.json` with your `s3BucketName` and
    `region` (optionally, change the `cloudFormationStackName`). If the bucket
    you specify does not yet exist, the next step will create it for you.
@@ -47,14 +49,14 @@ installed.
    https://console.aws.amazon.com/cloudformation/home and switch to the region
    you specified. Select the `ServerlessExpressStack` stack (or the stack name
    you specified for `cloudFormationStackName`), then click the `ApiUrl` value
-   under the __Outputs__ section - this will open a new page with your running
+   under the **Outputs** section - this will open a new page with your running
    API. The API index lists the resources available in the example Express
    server (`app.js`), along with example `curl` commands.
 1. (optional) To enable the `invoke-lambda` `package.json` `script`: copy the
    `LambdaFunctionName` from the CloudFormation Outputs and paste it into the
    `package.json` `config`'s `functionName` property.
-    Run `npm run invoke-lambda` to invoke the Lambda Function with the payload
-    specified in `api-gateway-event.json`.
+   Run `npm run invoke-lambda` to invoke the Lambda Function with the payload
+   specified in `api-gateway-event.json`.
 
 See the sections below for details on how to migrate an existing (or create a
 new) Node.js project based on this example. If you would prefer to delete AWS
@@ -68,9 +70,7 @@ run `npm run delete-bucket`.
 To use this example as a base for a new Node.js project:
 
 1. Copy the files in the `examples/basic-starter-api-gateway-v2-typescript`
-   directory into a new project directory (`cp -r
-   ./examples/basic-starter-api-gateway-v2-typescript
-   ~/projects/my-new-node-project`). If you have not already done so, follow the
+   directory into a new project directory (`cp -r ./examples/basic-starter-api-gateway-v2-typescript ~/projects/my-new-node-project`). If you have not already done so, follow the
    [steps for running the example](#steps-for-running-the-example) (you may want
    to first modify some of the resource names to something more
    project-specific, eg. the CloudFormation stack, Lambda function, and API
@@ -87,17 +87,17 @@ To migrate an existing Node server:
    Lambda. If you have not already done so, follow the [steps for running the
    example](#steps-for-running-the-example).
 1. From your existing project directory, run
-  ```sh
-  npm install --save @vendia/serverless-express
-  ```
+
+```sh
+npm install --save @vendia/serverless-express
+```
+
 1. Modify `lambda.ts` to import your own server configuration (eg. change
    `require('./app')` to `require('./server')`). You will need to ensure you
-   export your app configuration from the necessary file (eg. `module.exports =
-   app`). This library takes your app configuration and listens on a Unix Domain
+   export your app configuration from the necessary file (eg. `module.exports = app`). This library takes your app configuration and listens on a Unix Domain
    Socket for you, so you can remove your call to `app.listen()`.
 1. Modify the `CodeUri` property of the Lambda function resource in
-   `sam-template.yaml` to point to your application directory (e.g. `CodeUri:
-   ./src`). If you are using a build tool (e.g. Gulp, Grunt, Webpack, Rollup,
+   `sam-template.yaml` to point to your application directory (e.g. `CodeUri: ./src`). If you are using a build tool (e.g. Gulp, Grunt, Webpack, Rollup,
    etc.), you will instead want to point to your build output directory.
 1. Run `npm run package-deploy`.
 

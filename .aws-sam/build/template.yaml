@@ -9,9 +9,9 @@ Parameters:
 Conditions:
   UseDomainName:
     Fn::Not:
-    - Fn::Equals:
-      - Ref: DomainName
-      - ''
+      - Fn::Equals:
+          - Ref: DomainName
+          - ''
 Resources:
   ExpressApi:
     Type: AWS::Serverless::HttpApi
@@ -39,12 +39,12 @@ Resources:
       DomainName:
         Fn::Sub: '*.${DomainName}'
       DomainValidationOptions:
-      - DomainName:
-          Fn::Sub: '*.${DomainName}'
-        ValidationDomain:
-          Ref: DomainName
+        - DomainName:
+            Fn::Sub: '*.${DomainName}'
+          ValidationDomain:
+            Ref: DomainName
       SubjectAlternativeNames:
-      - Ref: DomainName
+        - Ref: DomainName
   MyApiDomainName:
     Type: AWS::ApiGateway::DomainName
     Condition: UseDomainName
@@ -76,19 +76,19 @@ Resources:
       HostedZoneId:
         Ref: Route53HostedZone
       RecordSets:
-      - Name:
-          Fn::Sub: ${DomainName}.
-        Type: A
-        AliasTarget:
-          EvaluateTargetHealth: false
-          HostedZoneId:
-            Fn::GetAtt:
-            - MyApiDomainName
-            - DistributionHostedZoneId
-          DNSName:
-            Fn::GetAtt:
-            - MyApiDomainName
-            - DistributionDomainName
+        - Name:
+            Fn::Sub: ${DomainName}.
+          Type: A
+          AliasTarget:
+            EvaluateTargetHealth: false
+            HostedZoneId:
+              Fn::GetAtt:
+                - MyApiDomainName
+                - DistributionHostedZoneId
+            DNSName:
+              Fn::GetAtt:
+                - MyApiDomainName
+                - DistributionDomainName
 Outputs:
   LambdaFunctionConsoleUrl:
     Description: Console URL for the Lambda Function.
@@ -99,7 +99,8 @@ Outputs:
     Value:
       Fn::Sub: https://${AWS::Region}.console.aws.amazon.com/apigateway/home?region=${AWS::Region}#/apis/${ExpressApi}/stages/prod
   ApiUrl:
-    Description: Invoke URL for your API. Clicking this link will perform a GET request
+    Description:
+      Invoke URL for your API. Clicking this link will perform a GET request
       on the root resource of your API.
     Value:
       Fn::Sub: https://${ExpressApi}.execute-api.${AWS::Region}.amazonaws.com/
