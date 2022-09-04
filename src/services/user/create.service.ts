@@ -1,5 +1,6 @@
 import { hash } from 'bcryptjs';
 import { validate } from 'class-validator';
+import { CelebrateError } from 'celebrate';
 import { dataSource } from '@/database';
 import { User } from '@/entities/user.entity';
 import { AppError } from '@/errors/AppError';
@@ -42,7 +43,7 @@ export class CreateUserService {
 
     if (error && error.constraints) {
       const [message] = Object.values(error.constraints);
-      throw new AppError(message);
+      throw new CelebrateError(message);
     }
 
     const hashPassword = await hash(password, 8);

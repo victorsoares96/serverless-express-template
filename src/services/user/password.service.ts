@@ -1,7 +1,8 @@
 import { compare, hash } from 'bcryptjs';
 import { dataSource } from '@/database';
 import { AppError } from '@/errors/AppError';
-import { User, passwordRule } from '@/entities/user.entity';
+import { User } from '@/entities/user.entity';
+import { passwordRule } from '@/utils/validators.util';
 
 export interface Request {
   id: string;
