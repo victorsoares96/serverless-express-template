@@ -34,7 +34,7 @@
     "prettier:format": "prettier --write .",
     "lint": "eslint ./src/ --ext .ts,.js,.json",
     "lint:fix": "eslint --fix ./src/ --ext .ts,.js,.json",
-    "type-check": "tsc -p tsconfig.json --noEmit",
+    "type-check": "tsc -p tsconfig.json --noEmit --pretty",
     "create-bucket": "cross-var aws s3 mb s3://$npm_package_config_s3BucketName --region $npm_package_config_region",
     "delete-bucket": "cross-var aws s3 rb s3://$npm_package_config_s3BucketName --region $npm_package_config_region",
     "delete-stack": "cross-var aws cloudformation delete-stack --stack-name $npm_package_config_cloudFormationStackName --region $npm_package_config_region",
