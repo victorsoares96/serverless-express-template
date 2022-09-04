@@ -16,13 +16,6 @@ export class PasswordService {
     currentPassword,
     newPassword,
   }: Request): Promise<void> {
-    if (!id) throw new AppError('The user id must be provided.');
-
-    if (!currentPassword)
-      throw new AppError('The current password must be provided.');
-
-    if (!newPassword) throw new AppError('The new password must be provided.');
-
     const user = await dataSource.manager.findOne(User, {
       where: { id },
     });

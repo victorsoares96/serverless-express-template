@@ -19,11 +19,6 @@ export class CreateUserService {
     email,
     password,
   }: Request): Promise<User> {
-    if (!name || !username || !email || !password)
-      throw new AppError(
-        'Please provide all fields: name, username, email and password.',
-      );
-
     const userExists = await dataSource.manager.findOne(User, {
       where: [{ name }, { email }, { username }],
     });
@@ -51,6 +46,10 @@ export class CreateUserService {
     user.password = hashPassword;
 
     await dataSource.manager.save(user);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    delete user.password;
 
     return user;
   }
