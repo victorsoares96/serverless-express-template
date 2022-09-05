@@ -70,6 +70,7 @@
     "typeorm": "0.3.7"
   },
   "devDependencies": {
+    "eslint": "8.23.0",
     "mocha": "10.0.0",
     "supertest": "6.2.4",
     "@types/mocha": "9.1.1",
@@ -100,7 +101,6 @@
     "commitizen-emoji": "1.0.5",
     "cross-env": "7.0.3",
     "cross-var": "1.1.0",
-    "eslint": "8.20.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-airbnb-typescript": "17.0.0",
     "eslint-config-prettier": "8.5.0",
