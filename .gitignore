@@ -6,3 +6,4 @@ dist
 .aws-sam
 !logs/.gitkeep
 logs/*
+.DS_Store
