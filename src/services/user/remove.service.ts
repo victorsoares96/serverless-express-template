@@ -21,8 +21,6 @@ export class RemoveUserService {
   }
 
   public async execute({ ids }: Request): Promise<void> {
-    if (!ids) throw new AppError('The user ids must be provided.');
-
     const userIds = ids.split(',');
 
     const users = await dataSource.manager.find(User, {
