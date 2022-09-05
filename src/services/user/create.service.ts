@@ -1,5 +1,6 @@
 import { hash } from 'bcryptjs';
 import { validate } from 'class-validator';
+import { CelebrateError } from 'celebrate';
 import { dataSource } from '@/database';
 import { User } from '@/entities/user.entity';
 import { AppError } from '@/errors/AppError';
@@ -18,11 +19,6 @@ export class CreateUserService {
     email,
     password,
   }: Request): Promise<User> {
-    if (!name || !username || !email || !password)
-      throw new AppError(
-        'Please provide all fields: name, username, email and password.',
-      );
-
     const userExists = await dataSource.manager.findOne(User, {
       where: [{ name }, { email }, { username }],
     });
@@ -42,7 +38,7 @@ export class CreateUserService {
 
     if (error && error.constraints) {
       const [message] = Object.values(error.constraints);
-      throw new AppError(message);
+      throw new CelebrateError(message);
     }
 
     const hashPassword = await hash(password, 8);
@@ -50,6 +46,10 @@ export class CreateUserService {
     user.password = hashPassword;
 
     await dataSource.manager.save(user);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    delete user.password;
 
     return user;
   }
