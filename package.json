@@ -50,7 +50,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@vendia/serverless-express": "4.3.10",
+    "@vendia/serverless-express": "4.10.1",
     "axios": "0.27.2",
     "bcryptjs": "2.4.3",
     "body-parser": "1.17.1",
