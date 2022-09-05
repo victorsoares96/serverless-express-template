@@ -11,10 +11,10 @@ export class AppError extends Error {
 
   constructor(
     message: string,
+    statusCode = 400,
     error = 'Bad Request',
     stack?: string | undefined,
     validation?: unknown,
-    statusCode = 400,
   ) {
     super(message);
 
