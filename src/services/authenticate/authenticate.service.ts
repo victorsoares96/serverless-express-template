@@ -45,6 +45,10 @@ export class AuthenticateService {
 
     await dataSource.manager.save(user);
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    delete user.password;
+
     return { user, token };
   }
 }

@@ -4,3 +4,6 @@ dist
 .env.development
 .env.production
 .aws-sam
+!logs/.gitkeep
+logs/*
+.DS_Store
