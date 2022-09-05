@@ -3,16 +3,13 @@ import { dataSource } from '@/database';
 import { User } from '@/entities/user.entity';
 
 export interface Request {
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-  deletionDate: Date;
-  username: string;
-  email: string;
-  isDeleted: boolean;
-  offset: number;
-  isAscending: boolean;
-  limit: number;
+  name?: string;
+  username?: string;
+  email?: string;
+  isDeleted?: boolean;
+  offset?: number;
+  isAscending?: boolean;
+  limit?: number;
 }
 
 export class FindUserService {
@@ -49,6 +46,15 @@ export class FindUserService {
       take: limit,
       skip: offset,
       order: { name: isAscending ? 'ASC' : 'DESC' },
+      select: [
+        'id',
+        'name',
+        'username',
+        'email',
+        'createdAt',
+        'updatedAt',
+        'deletionDate',
+      ],
     });
 
     return users;

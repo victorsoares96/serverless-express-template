@@ -8,9 +8,9 @@ const development: DataSourceOptions = {
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  ssl: {
+  /* ssl: {
     rejectUnauthorized: false,
-  },
+  }, */
   synchronize: false,
   logging: false,
   entities: ['src/entities/*.ts'],
@@ -25,9 +25,9 @@ const production: DataSourceOptions = {
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  ssl: {
+  /* ssl: {
     rejectUnauthorized: false,
-  },
+  }, */
   synchronize: false,
   logging: false,
   entities: ['entities/*.js', 'dist/entities/*.js'],

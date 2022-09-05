@@ -10,9 +10,6 @@ import {
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 import { IsValidPassword } from './decorators/isValidPassword';
 
-export const passwordRule =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/gm;
-
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn('increment')

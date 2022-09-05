@@ -1,7 +1,8 @@
 import { compare, hash } from 'bcryptjs';
 import { dataSource } from '@/database';
 import { AppError } from '@/errors/AppError';
-import { User, passwordRule } from '@/entities/user.entity';
+import { User } from '@/entities/user.entity';
+import { passwordRule } from '@/utils/validators.util';
 
 export interface Request {
   id: string;
@@ -15,13 +16,6 @@ export class PasswordService {
     currentPassword,
     newPassword,
   }: Request): Promise<void> {
-    if (!id) throw new AppError('The user id must be provided.');
-
-    if (!currentPassword)
-      throw new AppError('The current password must be provided.');
-
-    if (!newPassword) throw new AppError('The new password must be provided.');
-
     const user = await dataSource.manager.findOne(User, {
       where: { id },
     });
