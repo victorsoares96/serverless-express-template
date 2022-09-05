@@ -4,6 +4,7 @@ import { isCelebrateError } from 'celebrate';
 import EscapeHtml from 'escape-html';
 import { Error as CustomError } from '@/types/error.type';
 import { AppError } from '@/errors/AppError';
+import log from '@/utils/log.util';
 
 export function errorHandler(
   error: Error,
@@ -11,7 +12,7 @@ export function errorHandler(
   response: Response,
   _: NextFunction,
 ): Response {
-  console.error(error);
+  log.error(error);
 
   if (error instanceof AppError) {
     return response.status(error.statusCode).json({

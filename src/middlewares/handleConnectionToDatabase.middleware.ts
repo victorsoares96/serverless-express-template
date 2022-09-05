@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AppDataSourceInitialize, dataSource } from '@/database';
 import { AppError } from '@/errors/AppError';
+import log from '@/utils/log.util';
 
 export default async function handleConnectionToDatabase(
   request: Request,
@@ -9,21 +10,17 @@ export default async function handleConnectionToDatabase(
 ): Promise<void> {
   try {
     if (!dataSource.isInitialized) await AppDataSourceInitialize();
-    console.log('📦  Connection to database open!');
-    console.log(
-      `[URL]: ${request.url} [METHOD]: ${
-        request.method
-      } [BODY]: ${JSON.stringify(request.body)}`,
-    );
+    log.info('📦  Connection to database open!');
+    log.info(`URL: ${request.url} METHOD: ${request.method} IP: ${request.ip}`);
 
     response.on('finish', async () => {
       await dataSource.destroy();
-      console.log('📦  Connection to database closed!');
+      log.info('📦  Connection to database closed!');
     });
 
     return next();
   } catch (error) {
-    console.log(error);
+    log.error(error);
     throw new AppError('❌  Error when initializing the database.', 500);
   }
 }
