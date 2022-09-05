@@ -4,12 +4,12 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { passwordRule } from '../user.entity';
+import { passwordRule } from '@/utils/validators.util';
 
 @ValidatorConstraint()
 export class IsValidPasswordConstraint implements ValidatorConstraintInterface {
   validate(password: string) {
-    const isValidPassword = passwordRule;
+    const isValidPassword = new RegExp(passwordRule, 'gm');
     return isValidPassword.test(password);
   }
 }

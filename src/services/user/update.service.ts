@@ -1,4 +1,5 @@
 import { validate } from 'class-validator';
+import { CelebrateError } from 'celebrate';
 import { dataSource } from '@/database';
 import { User } from '@/entities/user.entity';
 
@@ -13,8 +14,6 @@ export interface Request {
 export class UpdateUserService {
   public async execute(userData: Request): Promise<User> {
     const { id } = userData;
-
-    if (!id) throw new AppError('The user id must be provided.');
 
     const user = await dataSource.manager.findOne(User, {
       where: { id },
@@ -33,10 +32,14 @@ export class UpdateUserService {
 
     if (error && error.constraints) {
       const [message] = Object.values(error.constraints);
-      throw new AppError(message);
+      throw new CelebrateError(message);
     }
 
     await dataSource.manager.save(updatedUser);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    delete updatedUser.password;
 
     return updatedUser;
   }
