@@ -78,7 +78,7 @@
     "@babel/node": "7.20.7",
     "@babel/plugin-proposal-decorators": "7.20.7",
     "@babel/preset-env": "7.20.2",
-    "eslint": "8.23.1",
+    "eslint": "8.31.0",
     "mocha": "10.0.0",
     "supertest": "6.3.3",
     "@types/mocha": "9.1.1",
