@@ -1,0 +1,10 @@
+{
+  "database": {
+    "type": "mysql",
+    "host": "localhost",
+    "port": 15432,
+    "username": "root",
+    "password": "root",
+    "name": "serverless_express_template"
+  }
+}

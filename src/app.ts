@@ -1,20 +1,25 @@
-import 'dotenv/config';
+/* eslint-disable import/no-named-as-default */
 import 'reflect-metadata';
+import 'express-async-errors';
 
 import cors from 'cors';
 import express from 'express';
-import 'express-async-errors';
 
 import compression from 'compression';
 import { errorHandler } from './middlewares/errorHandler.middleware';
 import handleConnectionToDatabase from './middlewares/handleConnectionToDatabase.middleware';
 import { usersRouter } from './routes/users.routes';
 import { authenticateRouter } from './routes/authenticate.routes';
+import log from './utils/log.util';
 
 class App {
   public express: express.Application;
 
+  private port: number;
+
   public constructor() {
+    this.port = 3333;
+
     this.express = express();
     this.express.use(compression());
     this.express.use(cors());
@@ -35,10 +40,20 @@ class App {
     this.express.use(errorHandler);
   }
 
+  public startServer(): void {
+    this.express
+      .listen(this.port, () => {
+        log.info(`🚀  Server started on port ${this.port}!`);
+      })
+      .on('error', err => {
+        log.error(`❌  Error when starting the server: ${err.message}`);
+      });
+  }
+
   private routes(): void {
     this.express.use(authenticateRouter);
     this.express.use(usersRouter);
   }
 }
 
-export default new App().express;
+export default new App();

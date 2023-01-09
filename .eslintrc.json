@@ -27,7 +27,7 @@
         "devDependencies": [
           "**/*.test.js",
           "**/*.spec.js",
-          "scripts/*.ts",
+          "**/scripts/*.ts",
           "**/tests/*.ts"
         ]
       }
