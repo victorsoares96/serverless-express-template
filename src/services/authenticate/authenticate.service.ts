@@ -3,7 +3,7 @@ import { sign } from 'jsonwebtoken';
 import { dataSource } from '@/database';
 import { User } from '@/entities/user.entity';
 import { AppError } from '@/errors/AppError';
-import authConfig from '@/config/auth';
+import authConfig from '@/constants/auth';
 
 export interface Request {
   username: string;

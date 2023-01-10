@@ -14,12 +14,11 @@
     "moduleResolution": "node",
     "noImplicitAny": true,
     "outDir": "dist",
-    "removeComments": true,
     "strictNullChecks": true,
     "target": "ES2022",
     "typeRoots": ["node_modules/@types"],
     "types": ["node"]
   },
-  "include": ["./src/**/*.ts", "scripts/local.ts"],
+  "include": ["./src/**/*.ts"],
   "exclude": ["./src/public/"]
 }

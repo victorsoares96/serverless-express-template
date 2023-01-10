@@ -1,9 +1,8 @@
 /* eslint-disable no-console */
 import winston, { createLogger, format } from 'winston';
 import LokiTransport from 'winston-loki';
-import { name } from '../../package.json';
 
-const projectName = name;
+const projectName = 'serverless-express-template';
 
 const log = createLogger({
   levels: winston.config.npm.levels,

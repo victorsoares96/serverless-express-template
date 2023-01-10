@@ -1,6 +1,6 @@
 import { Context, Callback } from 'aws-lambda';
-import apiGatewayEvent from '../api-gateway-event.json';
-import * as lambdaFunction from '../src/lambda';
+import apiGatewayEvent from './api-gateway-event.json';
+import * as lambdaFunction from '../lambda';
 
 const context = {} as Context;
 
