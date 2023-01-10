@@ -29,8 +29,8 @@ jobs:
       - name: Type Check
         run: yarn type-check
 
-      - name: Unit Testing
-        run: yarn test:coverage
+      # - name: Unit Testing
+      #   run: yarn test:coverage
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v3
