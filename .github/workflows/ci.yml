@@ -32,9 +32,9 @@ jobs:
       # - name: Unit Testing
       #   run: yarn test:coverage
 
-      - name: Upload Coverage
-        uses: codecov/codecov-action@v3
-        with:
+      # - name: Upload Coverage
+      #   uses: codecov/codecov-action@v3
+      #   with:
       #   token: ${{secrets.CODECOV_TOKEN}} # required for private repos
-          directory: coverage
-          fail_ci_if_error: true
+      #    directory: coverage
+      #    fail_ci_if_error: true
