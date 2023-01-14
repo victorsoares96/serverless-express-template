@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "templateVersion": "1.3.0",
   "description": "A template for serverless-express",
-  "main": "./src/lambda.js",
+  "main": "./lambda.js",
   "type": "commonjs",
   "config": {
     "s3BucketName": "serverless-express-template-bucket",
