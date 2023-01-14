@@ -8,7 +8,15 @@ export default async function showProjectVersion(
   next: NextFunction,
 ): Promise<void> {
   const packageJson = JSON.parse(
-    fs.readFileSync(path.resolve(__dirname, '../../package.json'), 'utf8'),
+    fs.readFileSync(
+      path.resolve(
+        __dirname,
+        process.env.NODE_ENV === 'production'
+          ? 'package.json'
+          : '../../package.json',
+      ),
+      'utf8',
+    ),
   );
   response.header('X-Project-Version', packageJson.version);
   response.header('X-Project-Template-Version', packageJson.templateVersion);
