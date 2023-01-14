@@ -4,21 +4,25 @@ import { AppError } from '@/errors/AppError';
 
 import authConfig from '../constants/auth';
 
-interface TokenPayload {
+export interface TokenPayload {
   iat: number;
   exp: number;
   sub: string;
   name: string;
 }
 
-export default function ensureAuthenticated(
+export default async function ensureAuthenticated(
   request: Request,
   response: Response,
   next: NextFunction,
-): void {
+): Promise<void> {
   const authHeader = request.headers.authorization;
 
-  if (!authHeader) throw new AppError('Missing JWT', 401);
+  if (!authHeader)
+    throw new AppError(
+      'Missing JWT token from the "Authorization" header',
+      401,
+    );
 
   const [, token] = authHeader.split(' ');
 
