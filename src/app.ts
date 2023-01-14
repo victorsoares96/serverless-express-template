@@ -11,6 +11,7 @@ import handleConnectionToDatabase from './middlewares/handleConnectionToDatabase
 import { usersRouter } from './routes/users.routes';
 import { authenticateRouter } from './routes/authenticate.routes';
 import log from './utils/log.util';
+import showProjectVersion from './middlewares/show-project-version.middleware';
 
 class App {
   public express: express.Application;
@@ -33,6 +34,7 @@ class App {
   }
 
   private routeLevelMiddlewares(): void {
+    this.express.use(showProjectVersion);
     this.express.use(handleConnectionToDatabase);
   }
 
