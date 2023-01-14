@@ -35,7 +35,7 @@
     "prod:migration:revert": "cross-env NODE_ENV=production ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/database/index.ts",
     "migration:generate": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d src/database/index.ts",
     "build": "tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-    "postbuild": "npm set-script prepare '' && cp -R src/views dist/ && cp package*json dist/ && cp -R src/assets dist/ && cp -R src/environments dist/ && npm set-script prepare 'husky install'",
+    "postbuild": "npm set-script prepare '' && cp -R src/views dist/ && cp package*json dist/ && cp -R src/assets dist/ && cp -R src/environments dist/ && cp -R logs dist/ && npm set-script prepare 'husky install'",
     "test": "cross-env NODE_ENV=staging jest --watch --detectOpenHandles",
     "test:coverage": "cross-env NODE_ENV=staging jest --coverage",
     "prettier:format": "prettier --write .",
