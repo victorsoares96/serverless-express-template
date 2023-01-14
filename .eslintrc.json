@@ -25,10 +25,8 @@
       "error",
       {
         "devDependencies": [
-          "**/*.test.js",
-          "**/*.spec.js",
-          "**/scripts/*.ts",
-          "**/tests/*.ts"
+          "**/*.spec.ts",
+          "**/scripts/*.ts"
         ]
       }
     ],

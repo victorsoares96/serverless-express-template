@@ -17,7 +17,7 @@
     "strictNullChecks": true,
     "target": "ES2022",
     "typeRoots": ["node_modules/@types"],
-    "types": ["node"]
+    "types": ["node", "jest"]
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["./src/public/"]
