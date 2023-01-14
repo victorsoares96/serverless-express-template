@@ -12,7 +12,7 @@ export default async function showProjectVersion(
       path.resolve(
         __dirname,
         process.env.NODE_ENV === 'production'
-          ? 'package.json'
+          ? '../package.json'
           : '../../package.json',
       ),
       'utf8',
