@@ -27,6 +27,12 @@ export const dataSource = new DataSource(
         password: env.get<string>('database.password'),
         database: env.get<string>('database.name'),
         synchronize: false,
+        ssl:
+          process.env.NODE_ENV === 'production'
+            ? {
+                rejectUnauthorized: true,
+              }
+            : undefined,
         logging: process.env.NODE_ENV === 'development',
         entities: [`${path.resolve(__dirname, '..')}/entities/*.{js,ts}`],
         migrations: [
