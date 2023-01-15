@@ -1,10 +1,10 @@
 {
   "database": {
     "type": "mysql",
-    "host": "localhost",
-    "port": 15432,
-    "username": "root",
-    "password": "root",
-    "name": "serverless_express_template"
+    "host": "us-east.connect.psdb.cloud",
+    "port": 3306,
+    "username": "m3eu7mhj0sxd6257hyg8",
+    "password": "pscale_pw_DKcQ52aUtWx4ONkOavwKudbrJpEMEX2V3st3cZFGbac",
+    "name": "testing"
   }
 }
