@@ -15,7 +15,7 @@ const productionDataSource = new DataSource({
     rejectUnauthorized: true,
   },
   logging: false,
-  entities: [`${path.resolve(__dirname, '..')}/entities/*.{js,ts}`],
+  entities: [`${path.resolve(__dirname, '..', '..')}/entities/*.{js,ts}`],
   migrations: [`${path.resolve(__dirname, '..')}/migrations/*.{js,ts}`],
   subscribers: [],
 });
