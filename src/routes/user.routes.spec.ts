@@ -6,17 +6,24 @@ let token: string;
 
 describe('user routes', () => {
   beforeAll(async () => {
-    const result = await request(app.express).post('/auth').send({
+    await app.startServer();
+
+    const result = await request(app.express).post('/api/session/create').send({
       username: 'admin',
       password: 'Admin@123',
     });
 
     token = result.body.token;
   });
-  describe('GET /users', () => {
+
+  afterAll(async () => {
+    await app.closeServer();
+  });
+
+  describe('GET /find-many', () => {
     it('returns with status 200', async () => {
       const result = await request(app.express)
-        .get('/users')
+        .get('/api/user/find-many')
         .set('Authorization', `Bearer ${token}`)
         .set('Accept', 'application/json');
 
@@ -34,9 +41,9 @@ describe('user routes', () => {
     });
   });
 
-  describe('POST /users', () => {
+  describe('POST /user/create', () => {
     it('returns with status 200', async () => {
-      const result = await request(app.express).post('/users').send({
+      const result = await request(app.express).post('/api/user/create').send({
         name: 'John Doe',
         username: 'johndoe',
         email: 'john@doe.com',

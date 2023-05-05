@@ -1,3 +1,5 @@
 import app from './app';
 
-app.startServer();
+(async () => {
+  await app.startServer();
+})();

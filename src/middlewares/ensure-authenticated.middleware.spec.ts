@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import ensureAuthenticated, {
   TokenPayload,
-} from './ensureAuthenticated.middleware';
+} from './ensure-authenticated.middleware';
 
 describe('Authorization middleware', () => {
   let mockRequest: Partial<Request>;

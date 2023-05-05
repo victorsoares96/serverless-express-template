@@ -12,7 +12,7 @@ const developmentDataSource = new DataSource({
   database: env.get<string>('database.name'),
   synchronize: false,
   logging: true,
-  entities: [`${path.resolve(__dirname, '..')}/entities/*.{js,ts}`],
+  entities: [`${path.resolve(__dirname, '..', '..')}/entities/*.{js,ts}`],
   migrations: [`${path.resolve(__dirname, '..')}/migrations/*.{js,ts}`],
   subscribers: [],
 });
