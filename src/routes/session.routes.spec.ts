@@ -2,13 +2,15 @@ import request from 'supertest';
 
 import app from '../app';
 
-describe('authenticate routes', () => {
-  describe('POST /auth', () => {
+describe('session routes', () => {
+  describe('POST /create', () => {
     it('returns auth response with status 200', async () => {
-      const result = await request(app.express).post('/auth').send({
-        username: 'admin',
-        password: 'Admin@123',
-      });
+      const result = await request(app.express)
+        .post('/api/session/create')
+        .send({
+          username: 'admin',
+          password: 'Admin@123',
+        });
 
       expect(result.status).toEqual(200);
       expect(result.body).toHaveProperty('token');
@@ -23,10 +25,12 @@ describe('authenticate routes', () => {
     });
 
     it('returns auth response with status 400 - Username is required', async () => {
-      const result = await request(app.express).post('/auth').send({
-        username: '',
-        password: 'Admin@1234',
-      });
+      const result = await request(app.express)
+        .post('/api/session/create')
+        .send({
+          username: '',
+          password: 'Admin@1234',
+        });
 
       expect(result.status).toEqual(400);
       expect(result.body).toHaveProperty('message', 'Validation failed');
@@ -37,10 +41,12 @@ describe('authenticate routes', () => {
     });
 
     it('returns auth response with status 400 - Password is required', async () => {
-      const result = await request(app.express).post('/auth').send({
-        username: 'admin',
-        password: '',
-      });
+      const result = await request(app.express)
+        .post('/api/session/create')
+        .send({
+          username: 'admin',
+          password: '',
+        });
 
       expect(result.status).toEqual(400);
       expect(result.body).toHaveProperty('message', 'Validation failed');
@@ -51,10 +57,12 @@ describe('authenticate routes', () => {
     });
 
     it('returns auth response with status 400 - username/password is incorrect', async () => {
-      const result = await request(app.express).post('/auth').send({
-        username: 'admin',
-        password: 'Admin@1234',
-      });
+      const result = await request(app.express)
+        .post('/api/session/create')
+        .send({
+          username: 'admin',
+          password: 'Admin@1234',
+        });
 
       expect(result.status).toEqual(401);
       expect(result.body).toHaveProperty(

@@ -1,10 +1,10 @@
 {
   "database": {
     "type": "mysql",
-    "host": "us-east.connect.psdb.cloud",
+    "host": "mysql.host",
     "port": 3306,
-    "username": "m3eu7mhj0sxd6257hyg8",
-    "password": "pscale_pw_DKcQ52aUtWx4ONkOavwKudbrJpEMEX2V3st3cZFGbac",
-    "name": "testing"
+    "username": "username",
+    "password": "password",
+    "name": "production_database"
   }
 }

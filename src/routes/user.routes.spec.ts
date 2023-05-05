@@ -6,7 +6,7 @@ let token: string;
 
 describe('user routes', () => {
   beforeAll(async () => {
-    const result = await request(app.express).post('/auth').send({
+    const result = await request(app.express).post('/api/session/create').send({
       username: 'admin',
       password: 'Admin@123',
     });
@@ -16,7 +16,7 @@ describe('user routes', () => {
   describe('GET /users', () => {
     it('returns with status 200', async () => {
       const result = await request(app.express)
-        .get('/users')
+        .get('/api/user/users')
         .set('Authorization', `Bearer ${token}`)
         .set('Accept', 'application/json');
 
@@ -36,7 +36,7 @@ describe('user routes', () => {
 
   describe('POST /users', () => {
     it('returns with status 200', async () => {
-      const result = await request(app.express).post('/users').send({
+      const result = await request(app.express).post('/api/user/users').send({
         name: 'John Doe',
         username: 'johndoe',
         email: 'john@doe.com',

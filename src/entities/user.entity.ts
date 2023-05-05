@@ -3,12 +3,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 import { IsValidPassword } from './decorators/isValidPassword';
+import { Session } from './session.entity';
 
 @Entity('user')
 export class User {
@@ -45,4 +47,10 @@ export class User {
       'Password must be at least 8 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.',
   })
   password: string;
+
+  @OneToMany(() => Session, session => session.user, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  sessions?: Session[];
 }

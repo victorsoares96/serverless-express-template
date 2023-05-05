@@ -12,9 +12,11 @@ export function errorHandler(
   response: Response,
   _: NextFunction,
 ): Response {
-  log.error(error);
-
   if (error instanceof AppError) {
+    log.error(
+      `[ERROR HANDLER]: ${error.name}, ${error.message}, ${error.stack}`,
+    );
+
     return response.status(error.statusCode).json({
       statusCode: error.statusCode,
       error: error.name,
@@ -34,6 +36,10 @@ export function errorHandler(
       };
     }
 
+    log.error(
+      `[ERROR HANDLER]: ${error.name}, ${error.message}, ${error.stack}`,
+    );
+
     return response.status(400).json({
       statusCode: 400,
       error: error.name,
@@ -44,6 +50,10 @@ export function errorHandler(
   }
 
   if (error instanceof Error) {
+    log.error(
+      `[ERROR HANDLER]: ${error.name}, ${error.message}, ${error.stack}`,
+    );
+
     return response.status(500).json({
       statusCode: 500,
       error: error.name,
@@ -52,6 +62,7 @@ export function errorHandler(
     } as CustomError);
   }
 
+  log.error(`[ERROR HANDLER]: unknown error`);
   return response.status(500).json({
     statusCode: 500,
     error: 'Internal Server Error',

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
-import ensureAuthenticated from '@/middlewares/ensureAuthenticated.middleware';
+import ensureAuthenticated from '@/middlewares/ensure-authenticated.middleware';
 import { UsersController } from '../controllers/user.controller';
 import { passwordRule } from '@/utils/validators.util';
 
@@ -8,7 +8,7 @@ export const usersRouter = Router();
 const usersController = new UsersController();
 
 usersRouter.get(
-  '/users',
+  '/find-many',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().messages({
@@ -39,7 +39,7 @@ usersRouter.get(
 );
 
 usersRouter.post(
-  '/users',
+  '/create',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required().messages({
@@ -67,7 +67,7 @@ usersRouter.post(
 );
 
 usersRouter.put(
-  '/users',
+  '/update',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       id: Joi.string().required().messages({
@@ -87,7 +87,7 @@ usersRouter.put(
 );
 
 usersRouter.delete(
-  '/users/remove',
+  '/remove',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       ids: Joi.string().required().messages({
@@ -101,7 +101,7 @@ usersRouter.delete(
 );
 
 usersRouter.delete(
-  '/users/soft-remove',
+  '/soft-remove',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       ids: Joi.string().required().messages({
@@ -115,7 +115,7 @@ usersRouter.delete(
 );
 
 usersRouter.patch(
-  '/users/recover',
+  '/recover',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       ids: Joi.string().required().messages({
@@ -129,7 +129,7 @@ usersRouter.patch(
 );
 
 usersRouter.patch(
-  '/users/password',
+  '/reset-password',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       id: Joi.string().required().messages({
