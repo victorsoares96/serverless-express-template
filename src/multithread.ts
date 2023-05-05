@@ -24,7 +24,7 @@ const runPrimaryProcess = () => {
 
 const runWorkerProcess = async () => {
   const { default: server } = await import('./app');
-  server.startServer();
+  await server.startServer();
 };
 
 (() => {

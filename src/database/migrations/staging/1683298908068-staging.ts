@@ -20,6 +20,10 @@ export class staging1683298908068 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "temporary_session" RENAME TO "session"`,
     );
+    // Password: Admin@123
+    await queryRunner.query(
+      `INSERT INTO \`user\` (\`name\`, \`username\`, \`email\`, \`password\`) VALUES ('Admin', 'admin', 'admin@admin.com', '$2a$08$K.dwMjqI4ngCX5Ne8Y/WyOBZJ5ekncZJRU7m7VoI.yv81XR1i7fpa')`,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

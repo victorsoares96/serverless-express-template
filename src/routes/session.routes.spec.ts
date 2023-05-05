@@ -3,6 +3,14 @@ import request from 'supertest';
 import app from '../app';
 
 describe('session routes', () => {
+  beforeAll(async () => {
+    await app.startServer();
+  });
+
+  afterAll(async () => {
+    await app.closeServer();
+  });
+
   describe('POST /create', () => {
     it('returns auth response with status 200', async () => {
       const result = await request(app.express)

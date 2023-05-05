@@ -8,6 +8,7 @@ import cors from 'cors';
 import express from 'express';
 
 import compression from 'compression';
+import { Server } from 'http';
 import { errorHandler } from './middlewares/error-handler.middleware';
 import handleConnectionToDatabase from './middlewares/handle-connection-to-database.middleware';
 import { usersRouter } from './routes/users.routes';
@@ -19,6 +20,8 @@ import { AppDataSourceInitialize, dataSource } from './database';
 
 class App {
   public express: express.Application;
+
+  private server: Server;
 
   private port: number;
 
@@ -83,19 +86,22 @@ class App {
     this.express.use(errorHandler);
   }
 
-  public startServer(): void {
-    AppDataSourceInitialize().then(() => {
-      log.info('📦  Connection to database open!');
+  public async startServer(): Promise<void> {
+    await AppDataSourceInitialize();
+    log.info('📦  Connection to database open!');
+    this.server = this.express
+      .listen(this.port, () => {
+        log.info(`🚀  Server started on port ${this.port}!`);
+      })
+      .on('error', err => {
+        dataSource.destroy();
+        log.error(`❌  Error when starting the server: ${err.message}`);
+      });
+  }
 
-      this.express
-        .listen(this.port, () => {
-          log.info(`🚀  Server started on port ${this.port}!`);
-        })
-        .on('error', err => {
-          dataSource.destroy();
-          log.error(`❌  Error when starting the server: ${err.message}`);
-        });
-    });
+  public async closeServer(): Promise<void> {
+    await dataSource.destroy();
+    this.server.close();
   }
 
   private routes(): void {
