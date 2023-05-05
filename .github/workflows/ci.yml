@@ -21,16 +21,16 @@ jobs:
           node-version: "18.x"
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Linting
-        run: yarn lint
+        run: npm run lint
 
       - name: Type Check
-        run: yarn type-check
+        run: npm run type-check
 
       - name: Testing
-        run: yarn test:coverage
+        run: npm run test:coverage
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v3
