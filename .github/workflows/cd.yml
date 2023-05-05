@@ -18,13 +18,13 @@ jobs:
           node-version: "18.x"
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Build Project
-        run: yarn build
+        run: npm run build
 
       - name: Run Migrations
-        run: yarn prod:migration:run
+        run: npm run prod:migration:run
 
       - name: Setup SAM
         uses: aws-actions/setup-sam@v2
@@ -41,7 +41,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Build SAM Template
-        run: yarn sam:build
+        run: npm run sam:build
 
       - name: Deploy SAM Template
-        run: yarn sam:deploy
+        run: npm run sam:deploy
