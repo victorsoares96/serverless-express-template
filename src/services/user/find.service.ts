@@ -49,6 +49,7 @@ export class FindUserService {
       select: [
         'id',
         'name',
+        'avatar',
         'username',
         'email',
         'createdAt',

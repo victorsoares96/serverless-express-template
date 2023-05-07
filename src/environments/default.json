@@ -1,10 +1,16 @@
 {
   "database": {
     "type": "mysql",
-    "host": "mysql.host",
+    "host": "mysql-db.victorsoares.cloud",
     "port": 3306,
     "username": "root",
-    "password": "password",
+    "password": "#Vitor96",
     "name": "serverless_express_template"
+  },
+  "s3": {
+    "AWS_ACCESS_KEY_ID": "",
+    "AWS_SECRET_ACCESS_KEY": "",
+    "AWS_REGION": "us-east-1",
+    "AWS_S3_BUCKET": "serverless_express_template"
   }
 }

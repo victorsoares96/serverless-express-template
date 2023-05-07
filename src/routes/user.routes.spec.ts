@@ -31,13 +31,16 @@ describe('user routes', () => {
 
       expect(result.status).toEqual(200);
       expect(usersCount).toEqual(1);
-      expect(users[0]).toHaveProperty('id', 1);
-      expect(users[0]).toHaveProperty('name', 'Admin');
-      expect(users[0]).toHaveProperty('username', 'admin');
-      expect(users[0]).toHaveProperty('email', 'admin@admin.com');
-      expect(users[0]).toHaveProperty('createdAt');
-      expect(users[0]).toHaveProperty('updatedAt');
-      expect(users[0]).toHaveProperty('deletionDate', null);
+      expect(users[0]).toEqual({
+        id: 1,
+        name: 'Admin',
+        avatar: null,
+        username: 'admin',
+        email: 'admin@admin.com',
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        deletionDate: null,
+      });
     });
   });
 
@@ -51,13 +54,16 @@ describe('user routes', () => {
       });
 
       expect(result.status).toEqual(200);
-      expect(result.body).toHaveProperty('id', 2);
-      expect(result.body).toHaveProperty('name', 'John Doe');
-      expect(result.body).toHaveProperty('username', 'johndoe');
-      expect(result.body).toHaveProperty('email', 'john@doe.com');
-      expect(result.body).toHaveProperty('createdAt');
-      expect(result.body).toHaveProperty('updatedAt');
-      expect(result.body).toHaveProperty('deletionDate', null);
+      expect(result.body).toEqual({
+        id: 2,
+        name: 'John Doe',
+        avatar: null,
+        username: 'johndoe',
+        email: 'john@doe.com',
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        deletionDate: null,
+      });
     });
   });
 });

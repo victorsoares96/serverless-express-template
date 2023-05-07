@@ -4,10 +4,10 @@ import ensureAuthenticated from '@/middlewares/ensure-authenticated.middleware';
 import { UsersController } from '../controllers/user.controller';
 import { passwordRule } from '@/utils/validators.util';
 
-export const usersRouter = Router();
-const usersController = new UsersController();
+export const router = Router();
+const controller = new UsersController();
 
-usersRouter.get(
+router.get(
   '/find-many',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
@@ -35,10 +35,10 @@ usersRouter.get(
     }),
   }),
   ensureAuthenticated,
-  usersController.index,
+  controller.index,
 );
 
-usersRouter.post(
+router.post(
   '/create',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
@@ -63,10 +63,10 @@ usersRouter.post(
       }),
     }),
   }),
-  usersController.create,
+  controller.create,
 );
 
-usersRouter.put(
+router.put(
   '/update',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
@@ -83,10 +83,10 @@ usersRouter.put(
     }),
   }),
   ensureAuthenticated,
-  usersController.update,
+  controller.update,
 );
 
-usersRouter.delete(
+router.delete(
   '/remove',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
@@ -97,10 +97,10 @@ usersRouter.delete(
     }),
   }),
   ensureAuthenticated,
-  usersController.remove,
+  controller.remove,
 );
 
-usersRouter.delete(
+router.delete(
   '/soft-remove',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
@@ -111,10 +111,10 @@ usersRouter.delete(
     }),
   }),
   ensureAuthenticated,
-  usersController.softRemove,
+  controller.softRemove,
 );
 
-usersRouter.patch(
+router.patch(
   '/recover',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
@@ -125,10 +125,10 @@ usersRouter.patch(
     }),
   }),
   ensureAuthenticated,
-  usersController.recover,
+  controller.recover,
 );
 
-usersRouter.patch(
+router.patch(
   '/reset-password',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
@@ -148,5 +148,7 @@ usersRouter.patch(
       }),
     }),
   }),
-  usersController.resetPassword,
+  controller.resetPassword,
 );
+
+router.patch('/change-avatar', ensureAuthenticated, controller.changeAvatar);

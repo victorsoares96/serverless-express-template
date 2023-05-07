@@ -8,7 +8,14 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsUrl,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { IsValidPassword } from './decorators/isValidPassword';
 import { Session } from './session.entity';
 
@@ -20,6 +27,11 @@ export class User {
   @Column({ name: 'name' })
   @IsNotEmpty({ message: 'Name is required.' })
   name: string;
+
+  @Column({ name: 'avatar', nullable: true, default: null })
+  @IsOptional()
+  @IsUrl()
+  avatar: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

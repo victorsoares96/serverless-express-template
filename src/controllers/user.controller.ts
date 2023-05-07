@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Request, Response } from 'express';
+import { UploadedFile } from 'express-fileupload';
 import {
   UpdateUserService,
   Request as UpdateRequest,
@@ -24,6 +25,7 @@ import {
   PasswordService,
   Request as PasswordRequest,
 } from '@/services/user/password.service';
+import { ChangeUserAvatarService } from '@/services/user/change-avatar.service';
 
 export class UsersController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -113,6 +115,23 @@ export class UsersController {
       id,
       currentPassword,
       newPassword,
+    });
+
+    return response.send();
+  }
+
+  public async changeAvatar(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { id } = request.body;
+    const avatar = request.files?.avatar as UploadedFile;
+
+    const changeUserAvatar = new ChangeUserAvatarService();
+
+    await changeUserAvatar.execute({
+      id,
+      avatar,
     });
 
     return response.send();

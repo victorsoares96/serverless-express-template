@@ -6,12 +6,13 @@ import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
 import express from 'express';
+import fileUpload from 'express-fileupload';
 
 import compression from 'compression';
 import { Server } from 'http';
 import { errorHandler } from './middlewares/error-handler.middleware';
 import handleConnectionToDatabase from './middlewares/handle-connection-to-database.middleware';
-import { usersRouter } from './routes/users.routes';
+import { router as userRouter } from './routes/users.routes';
 import { router as sessionRouter } from './routes/session.routes';
 import log from './utils/log.util';
 import showProjectVersion from './middlewares/show-project-version.middleware';
@@ -33,11 +34,14 @@ class App {
     this.port = 3333;
 
     this.express = express();
+    this.express.use(fileUpload());
     this.express.use(compression());
     this.express.use(cors());
     this.express.use(express.json());
     this.express.use(express.json({ limit: '5mb' }));
     this.express.use(express.urlencoded({ limit: '5mb', extended: true }));
+
+    this.listeners();
 
     this.routeLevelMiddlewares();
     this.routes();
@@ -100,13 +104,42 @@ class App {
   }
 
   public async closeServer(): Promise<void> {
-    await dataSource.destroy();
-    this.server.close();
+    try {
+      await dataSource.destroy();
+      this.server.close();
+    } catch (error) {
+      // process.exit();
+    }
   }
 
   private routes(): void {
     this.express.use('/api/session', sessionRouter);
-    this.express.use('/api/user', usersRouter);
+    this.express.use('/api/user', userRouter);
+  }
+
+  private listeners(): void {
+    // SIGINT signal (CTRL-C)
+    process.on('SIGINT', () => {
+      log.warn('[PROCESS]: received SIGINT signal');
+      this.closeServer();
+    });
+
+    // SIGTERM signal (Docker stop)
+    process.on('SIGTERM', () => {
+      log.warn('[PROCESS]: received SIGTERM signal');
+      this.closeServer();
+    });
+
+    process.on('uncaughtException', error => {
+      log.error('[PROCESS]: uncaught exception: ', error);
+      this.closeServer();
+    });
+
+    process.on('unhandledRejection', (reason, promise) => {
+      log.error(`[PROCESS]: Unhandled rejection: ${reason} ${promise}`);
+      log.error(promise);
+      this.closeServer();
+    });
   }
 }
 
