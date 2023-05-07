@@ -1,10 +1,10 @@
 {
   "database": {
     "type": "mysql",
-    "host": "mysql-db.victorsoares.cloud",
+    "host": "mysql-db.host",
     "port": 3306,
     "username": "root",
-    "password": "#Vitor96",
+    "password": "password",
     "name": "serverless_express_template"
   },
   "s3": {
