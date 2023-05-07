@@ -28,10 +28,10 @@ export class User {
   @IsNotEmpty({ message: 'Name is required.' })
   name: string;
 
-  @Column({ name: 'avatar', nullable: true, default: null })
+  @Column({ name: 'avatar', nullable: true, default: null, type: String })
   @IsOptional()
   @IsUrl()
-  avatar: string;
+  avatar: string | null;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

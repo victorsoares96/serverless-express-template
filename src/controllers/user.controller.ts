@@ -129,11 +129,11 @@ export class UsersController {
 
     const changeUserAvatar = new ChangeUserAvatarService();
 
-    await changeUserAvatar.execute({
+    const url = await changeUserAvatar.execute({
       id,
       avatar,
     });
 
-    return response.send();
+    return response.json({ avatar: url });
   }
 }
