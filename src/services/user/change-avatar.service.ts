@@ -8,7 +8,7 @@ import Storage from '@/utils/storage.util';
 
 export interface Request {
   id: User['id'];
-  avatar: UploadedFile;
+  avatar: UploadedFile | null;
 }
 
 export class ChangeUserAvatarService {
@@ -18,11 +18,10 @@ export class ChangeUserAvatarService {
     this.storage = new Storage();
   }
 
-  public async execute({ id, avatar }: Request): Promise<void> {
-    const user = await dataSource.manager.findOneBy(User, { id });
-
-    if (!user) throw new AppError('The user could not be found');
-
+  private async createAvatar(
+    user: User,
+    avatar: UploadedFile,
+  ): Promise<string> {
     const url = await this.storage.uploadObject(
       `${Date.now()}_${avatar.name}`,
       avatar.data,
@@ -41,5 +40,29 @@ export class ChangeUserAvatarService {
     }
 
     await dataSource.manager.save(user);
+
+    return url;
+  }
+
+  private async deleteAvatar(user: User): Promise<void> {
+    if (user.avatar) {
+      await this.storage.deleteObject(user.avatar);
+      user.avatar = null;
+      await dataSource.manager.save(user);
+    }
+  }
+
+  public async execute({ id, avatar }: Request): Promise<string | null> {
+    const user = await dataSource.manager.findOneBy(User, { id });
+
+    if (!user) throw new AppError('The user could not be found');
+
+    if (avatar) {
+      const url = this.createAvatar(user, avatar);
+      return url;
+    }
+
+    this.deleteAvatar(user);
+    return null;
   }
 }
