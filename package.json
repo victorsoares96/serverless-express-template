@@ -74,7 +74,7 @@
     "mysql2": "2.3.3",
     "reflect-metadata": "0.1.13",
     "source-map-support": "0.5.21",
-    "tslib": "2.5.0",
+    "tslib": "2.6.2",
     "typeorm": "0.3.15",
     "winston": "3.8.2",
     "winston-loki": "6.0.6"
