@@ -5,8 +5,9 @@ import log from './utils/log.util';
 const runPrimaryProcess = () => {
   const processesCount = os.cpus().length;
 
-  log.info(`Primary ${process.pid} is running`);
-  log.info(`Forking Server with ${processesCount} processes\n`);
+  log.info(
+    `🚀 Primary process running with id: ${process.pid}, forking server with ${processesCount} processes!`,
+  );
 
   for (let index = 0; index < processesCount; index++) {
     cluster.fork();
@@ -14,7 +15,7 @@ const runPrimaryProcess = () => {
     cluster.on('exit', (worker, code, signal) => {
       if (code !== 0 && !worker.exitedAfterDisconnect) {
         log.info(
-          `Worker ${worker.process.pid} died with signal ${signal}, scheduling another one`,
+          `💀 worker ${worker.process.pid} died with signal ${signal}, scheduling another one...`,
         );
         cluster.fork();
       }
@@ -23,14 +24,28 @@ const runPrimaryProcess = () => {
 };
 
 const runWorkerProcess = async () => {
-  const { default: server } = await import('./app');
-  await server.startServer();
+  const { default: Database } = await import('./database/database');
+  const { default: Server } = await import('./server');
+
+  const database = new Database();
+  const server = new Server();
+
+  const connection = await database.connect();
+  await server.startServer(connection);
+
+  log.info(`ℹ️  Worker process running with id: ${process.pid}!`);
 };
 
-(() => {
-  if (cluster.isPrimary) {
-    runPrimaryProcess();
-  } else {
-    runWorkerProcess();
+(async () => {
+  try {
+    if (cluster.isPrimary) {
+      runPrimaryProcess();
+    } else {
+      await runWorkerProcess();
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      log.error(`${error.message} ${error.stack}`);
+    } else log.error(error);
   }
 })();
