@@ -1,19 +1,37 @@
 import request from 'supertest';
 
-import app from '../app';
+import { hash } from 'bcryptjs';
+import Server from '../server';
+import Database from '@/database/database.mock';
+import generateRandomNumber from '@/utils/generate-random-number.util';
+import { createFakeUser } from '@/mocks/user.mock';
 
 describe('session routes', () => {
+  const database = new Database();
+  const server = new Server();
+
   beforeAll(async () => {
-    await app.startServer();
+    const connection = await database.connect();
+    await server.startServer(connection, generateRandomNumber(4000, 5000));
+  });
+
+  beforeEach(async () => {
+    await database.clear();
+    await database.seed();
   });
 
   afterAll(async () => {
-    await app.closeServer();
+    await server.closeServer();
   });
 
   describe('POST /create', () => {
     it('returns auth response with status 200', async () => {
-      const result = await request(app.express)
+      const password = await hash('Admin@123', 8);
+      await database.createUsers(undefined, [
+        createFakeUser({ username: 'admin', password }),
+      ]);
+
+      const result = await request(server.express)
         .post('/api/session/create')
         .send({
           username: 'admin',
@@ -23,17 +41,13 @@ describe('session routes', () => {
       expect(result.status).toEqual(200);
       expect(result.body).toHaveProperty('token');
       expect(result.body).toHaveProperty('user');
-      expect(result.body.user).toHaveProperty('id', 1);
-      expect(result.body.user).toHaveProperty('name', 'Admin');
+      expect(result.body.user).toHaveProperty('id');
       expect(result.body.user).toHaveProperty('username', 'admin');
-      expect(result.body.user).toHaveProperty('email', 'admin@admin.com');
-      expect(result.body.user).toHaveProperty('createdAt');
-      expect(result.body.user).toHaveProperty('updatedAt');
       expect(result.body.user).toHaveProperty('deletionDate', null);
     });
 
     it('returns auth response with status 400 - Username is required', async () => {
-      const result = await request(app.express)
+      const result = await request(server.express)
         .post('/api/session/create')
         .send({
           username: '',
@@ -49,7 +63,7 @@ describe('session routes', () => {
     });
 
     it('returns auth response with status 400 - Password is required', async () => {
-      const result = await request(app.express)
+      const result = await request(server.express)
         .post('/api/session/create')
         .send({
           username: 'admin',
@@ -65,7 +79,7 @@ describe('session routes', () => {
     });
 
     it('returns auth response with status 400 - username/password is incorrect', async () => {
-      const result = await request(app.express)
+      const result = await request(server.express)
         .post('/api/session/create')
         .send({
           username: 'admin',

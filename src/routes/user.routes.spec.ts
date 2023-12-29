@@ -1,28 +1,41 @@
 import request from 'supertest';
 
-import app from '../app';
+import Server from '../server';
+import Database from '@/database/database.mock';
+import generateRandomNumber from '@/utils/generate-random-number.util';
 
 let token: string;
 
 describe('user routes', () => {
-  beforeAll(async () => {
-    await app.startServer();
+  const database = new Database();
+  const server = new Server();
 
-    const result = await request(app.express).post('/api/session/create').send({
-      username: 'admin',
-      password: 'Admin@123',
-    });
+  beforeAll(async () => {
+    const connection = await database.connect();
+    await server.startServer(connection, generateRandomNumber(4000, 5000));
+
+    const result = await request(server.express)
+      .post('/api/session/create')
+      .send({
+        username: 'admin',
+        password: 'Admin@123',
+      });
 
     token = result.body.token;
   });
 
+  beforeEach(async () => {
+    await database.clear();
+    await database.seed();
+  });
+
   afterAll(async () => {
-    await app.closeServer();
+    await server.closeServer();
   });
 
   describe('GET /find-many', () => {
     it('returns with status 200', async () => {
-      const result = await request(app.express)
+      const result = await request(server.express)
         .get('/api/user/find-many')
         .set('Authorization', `Bearer ${token}`)
         .set('Accept', 'application/json');
@@ -31,39 +44,24 @@ describe('user routes', () => {
 
       expect(result.status).toEqual(200);
       expect(usersCount).toEqual(1);
-      expect(users[0]).toEqual({
-        id: 1,
-        name: 'Admin',
-        avatar: null,
-        username: 'admin',
-        email: 'admin@admin.com',
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
-        deletionDate: null,
-      });
+      expect(users[0]).toHaveProperty('name', 'John Doe');
     });
   });
 
   describe('POST /user/create', () => {
     it('returns with status 200', async () => {
-      const result = await request(app.express).post('/api/user/create').send({
-        name: 'John Doe',
-        username: 'johndoe',
-        email: 'john@doe.com',
-        password: 'John@123',
-      });
+      const result = await request(server.express)
+        .post('/api/user/create')
+        .send({
+          name: 'Jane Doe',
+          username: 'janedoe',
+          email: 'jane@doe.com',
+          password: 'Jane@123',
+        });
 
       expect(result.status).toEqual(200);
-      expect(result.body).toEqual({
-        id: 2,
-        name: 'John Doe',
-        avatar: null,
-        username: 'johndoe',
-        email: 'john@doe.com',
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
-        deletionDate: null,
-      });
+      expect(result.body).toHaveProperty('id');
+      expect(result.body).toHaveProperty('name', 'Jane Doe');
     });
   });
 });

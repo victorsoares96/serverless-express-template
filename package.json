@@ -19,9 +19,9 @@
     }
   },
   "engines": {
-    "node": ">=18.x.x <=19.x.x",
+    "node": ">=20.x.x <=21.x.x",
     "yarn": "not allowed in this project",
-    "npm": ">=8.0.0"
+    "npm": ">=10.0.0"
   },
   "scripts": {
     "prepare": "husky install",
@@ -72,6 +72,7 @@
     "express-fileupload": "^1.4.0",
     "jsonwebtoken": "9.0.0",
     "mysql2": "2.3.3",
+    "node-cache": "^5.1.2",
     "reflect-metadata": "0.1.13",
     "source-map-support": "0.5.21",
     "tslib": "2.6.2",
@@ -80,6 +81,7 @@
     "winston-loki": "6.0.6"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.3.1",
     "@types/aws-lambda": "8.10.115",
     "@types/bcryptjs": "2.4.6",
     "@types/compression": "1.7.2",
