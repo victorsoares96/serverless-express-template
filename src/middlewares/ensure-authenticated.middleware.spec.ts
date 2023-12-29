@@ -58,7 +58,7 @@ describe('Authorization middleware', () => {
           exp: 123456,
           sub: '123456',
           name: 'John Doe',
-        } as TokenPayload),
+        }) as TokenPayload,
     );
 
     mockRequest = {
