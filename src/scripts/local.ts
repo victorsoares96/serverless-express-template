@@ -4,9 +4,9 @@ import * as lambdaFunction from '../lambda';
 
 const context = {} as Context;
 
-const callback: Callback = (_e: any, _v: any) => {};
+const callback: Callback = (_e: unknown, _v: unknown) => {};
 
-const server: void | Promise<any> = lambdaFunction.handler(
+const server: void | Promise<unknown> = lambdaFunction.handler(
   apiGatewayEvent,
   context,
   callback,
