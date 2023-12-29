@@ -27,7 +27,8 @@
       {
         "devDependencies": [
           "**/*.spec.ts",
-          "**/scripts/*.ts"
+          "**/scripts/*.ts",
+          "**/*.mock.ts"
         ]
       }
     ],
