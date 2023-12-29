@@ -123,6 +123,6 @@
     "ts-node-dev": "2.0.0",
     "tsc-alias": "1.8.6",
     "tsconfig-paths": "4.2.0",
-    "typescript": "5.0.4"
+    "typescript": "5.3.3"
   }
 }
