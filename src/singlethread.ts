@@ -10,7 +10,7 @@ import log from './utils/log.util';
     const server = new Server();
 
     const connection = await database.connect();
-    await server.startServer(connection);
+    await server.startServer(connection, env.get('port'));
 
     log.info(
       `🚀  Server started on port ${env.get('port')}, process id: ${

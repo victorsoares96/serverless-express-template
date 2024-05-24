@@ -12,7 +12,6 @@ import {
   IsEmail,
   IsNotEmpty,
   IsOptional,
-  IsUrl,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -30,7 +29,6 @@ export class User {
 
   @Column({ name: 'avatar', nullable: true, default: null, type: String })
   @IsOptional()
-  @IsUrl()
   avatar: string | null;
 
   @CreateDateColumn({ name: 'created_at' })
