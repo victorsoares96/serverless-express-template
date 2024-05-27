@@ -13,7 +13,9 @@ const developmentDataSource = new DataSource({
   synchronize: false,
   logging: true,
   entities: [`${path.resolve(__dirname, '..', '..')}/entities/*.{js,ts}`],
-  migrations: [`${path.resolve(__dirname, '..')}/migrations/*.{js,ts}`],
+  migrations: [
+    `${path.resolve(__dirname, '..')}/migrations/*-migrations.{js,ts}`,
+  ],
   subscribers: [],
 });
 

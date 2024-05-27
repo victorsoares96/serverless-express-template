@@ -1,5 +1,3 @@
-import { validate } from 'class-validator';
-import { CelebrateError } from 'celebrate';
 import { UploadedFile } from 'express-fileupload';
 import { dataSource } from '@/database';
 import { User } from '@/entities/user.entity';
@@ -23,25 +21,16 @@ export class ChangeUserAvatarService {
     avatar: UploadedFile,
   ): Promise<string> {
     const url = await this.storage.uploadObject(
-      `${Date.now()}_${avatar.name}`,
+      avatar.name,
       avatar.data,
       avatar.mimetype,
     );
 
-    user.avatar = url;
-
-    const [error] = await validate(user, {
-      stopAtFirstError: true,
-    });
-
-    if (error && error.constraints) {
-      const [message] = Object.values(error.constraints);
-      throw new CelebrateError(message);
-    }
+    user.avatar = url.fileId;
 
     await dataSource.manager.save(user);
 
-    return url;
+    return url.thumbnail as string;
   }
 
   private async deleteAvatar(user: User): Promise<void> {

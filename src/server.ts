@@ -19,6 +19,8 @@ import { router as sessionRouter } from './routes/session.routes';
 import log from './utils/log.util';
 import showProjectVersion from './middlewares/show-project-version.middleware';
 import isLambda from './utils/is-lambda.util';
+import env from './utils/env.util';
+import { LOCAL_STORAGE_PATH } from './utils/storage.util';
 
 const cache = new NodeCache();
 
@@ -36,43 +38,21 @@ class Server {
   private templateVersion: string;
 
   public constructor() {
-    this.PORT = Number(process.env.PORT);
+    this.PORT = Number(env.get('port'));
 
     this.express = express();
-    this.express.use(fileUpload());
+    this.express.use(
+      fileUpload({
+        limits: { fileSize: 20 * 1024 * 1024 },
+      }),
+    );
     this.express.use(compression());
     this.express.use(cors());
     this.express.use(express.json());
     this.express.use(express.json({ limit: '5mb' }));
     this.express.use(express.urlencoded({ limit: '5mb', extended: true }));
 
-    this.listeners();
     this.getProjectVersion();
-  }
-
-  private listeners(): void {
-    // SIGINT signal (CTRL-C)
-    process.on('SIGINT', () => {
-      log.warn('[PROCESS]: received SIGINT signal');
-      this.closeServer();
-    });
-
-    // SIGTERM signal (Docker stop)
-    process.on('SIGTERM', () => {
-      log.warn('[PROCESS]: received SIGTERM signal');
-      this.closeServer();
-    });
-
-    process.on('uncaughtException', error => {
-      log.error('[PROCESS]: uncaught exception: ', error);
-      this.closeServer();
-    });
-
-    process.on('unhandledRejection', (reason, promise) => {
-      log.error(`[PROCESS]: Unhandled rejection: ${reason} ${promise}`);
-      log.error(promise);
-      this.closeServer();
-    });
   }
 
   private getProjectVersion(): void {
@@ -126,6 +106,7 @@ class Server {
   }
 
   private routes(): void {
+    this.express.use('/bucket', express.static(LOCAL_STORAGE_PATH));
     this.express.use('/api/session', sessionRouter);
     this.express.use('/api/user', userRouter);
   }
@@ -155,11 +136,16 @@ class Server {
 
   public async closeServer(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.server.close(async error => {
+      this.server?.close(error => {
         if (error) reject(error);
-        await this.connection.destroy();
-        log.info(`[SERVER]: closed all connections`);
-        resolve();
+
+        return this.connection
+          .destroy()
+          .then(() => {
+            log.info(`[SERVER]: closed all connections`);
+            resolve();
+          })
+          .catch(reject);
       });
     });
   }

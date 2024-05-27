@@ -13,3 +13,6 @@ logs/*
 .DS_Store
 
 coverage/
+
+bucket/*
+!bucket/.gitkeep
