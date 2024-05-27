@@ -415,6 +415,77 @@ class Storage {
     throw new AppError(`${this.storage} is unknown storage type`);
   }
 
+  private async renameLocalObject(
+    fileId: string,
+    newFileId: string,
+  ): Promise<StorageObject> {
+    const mimeType = mime.lookup(fileId);
+
+    await fs.promises.rename(
+      path.join(this.outputPath, fileId),
+      path.join(this.outputPath, newFileId),
+    );
+
+    if (mimeType && mimeType?.startsWith('image')) {
+      await fs.promises.rename(
+        path.join(this.outputPath, this.generateThumbnailName(fileId)),
+        path.join(this.outputPath, this.generateThumbnailName(newFileId)),
+      );
+    }
+
+    return this.getObject(newFileId);
+  }
+
+  private async renameS3Object(
+    fileId: string,
+    newFileId: string,
+  ): Promise<StorageObject> {
+    const mimeType = mime.lookup(fileId);
+
+    const command = new CopyObjectCommand({
+      Bucket: this.bucket,
+      Key: newFileId,
+      CopySource: this.getObject(fileId).url,
+      ContentType: mimeType || undefined,
+    });
+
+    await this.s3.send(command);
+
+    const isImage = StringUtils.isImage(fileId);
+
+    if (isImage) {
+      command.input.Key = this.generateThumbnailName(newFileId);
+      command.input.CopySource = this.getS3Object(fileId).thumbnail!;
+      await this.s3.send(command);
+    }
+
+    this.deleteS3Object(fileId);
+
+    return this.getS3Object(newFileId);
+  }
+
+  public async renameObject(
+    fileId: string,
+    newFilename: string,
+  ): Promise<StorageObject> {
+    const [id] = fileId.split('_');
+    const newFileId = `${id}_${newFilename}`;
+
+    if (fileId === newFileId) {
+      throw new AppError('new name must be differ older name');
+    }
+
+    if (this.storage === 'local') {
+      return this.renameLocalObject(fileId, newFileId);
+    }
+
+    if (this.storage === 's3') {
+      return this.renameS3Object(fileId, newFileId);
+    }
+
+    throw new AppError(`${this.storage} is unknown storage type`);
+  }
+
   public async generateThumbnail(
     image: Buffer,
     options?: { width?: number; height?: number },

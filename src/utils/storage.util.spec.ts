@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 import { AppError } from '@/errors/AppError';
 import Storage, { LOCAL_STORAGE_PATH } from './storage.util';
 import StringUtils from './string-utils.util';
@@ -182,6 +183,145 @@ describe('Storage Local', () => {
       await expect(
         unknownStorage.copyObject('test_file.jpg', 'source_path'),
       ).rejects.toThrow('unknown is unknown storage type');
+    });
+  });
+
+  describe('deleteObject', () => {
+    it('should delete object', async () => {
+      fs.writeFileSync(
+        path.resolve(LOCAL_STORAGE_PATH, 'tmp_file.txt'),
+        'john doe',
+      );
+
+      await storage.deleteObject('tmp_file.txt');
+
+      expect(
+        fs.existsSync(path.resolve(LOCAL_STORAGE_PATH, 'tmp_file.txt')),
+      ).toBeFalsy();
+    });
+
+    it('should throw AppError if storage type is unknown', async () => {
+      const unknownStorage = new Storage({ storage: 'unknown' as never });
+
+      await expect(
+        unknownStorage.deleteObject('test_file.jpg'),
+      ).rejects.toThrow(AppError);
+      await expect(
+        unknownStorage.deleteObject('test_file.jpg'),
+      ).rejects.toThrow('unknown is unknown storage type');
+    });
+  });
+
+  describe('generateThumbnail', () => {
+    it('should generate image thumbnail', async () => {
+      const image = await fs.promises.readFile(
+        path.resolve(__dirname, 'image.png'),
+      );
+      const thumbnail = await storage.generateThumbnail(image);
+
+      expect(thumbnail.length).toBeLessThan(image.length);
+    });
+  });
+
+  describe('renameObject', () => {
+    it('should throw error if new name is equal older name', async () => {
+      const uuid = uuidv4();
+      await expect(
+        storage.renameObject(`${uuid}_tmp_file.txt`, `tmp_file.txt`),
+      ).rejects.toThrow('new name must be differ older name');
+    });
+
+    it('should throw AppError if storage type is unknown', async () => {
+      const uuid = uuidv4();
+      const unknownStorage = new Storage({ storage: 'unknown' as never });
+
+      await expect(
+        unknownStorage.renameObject(`${uuid}_tmp_file.txt`, `new_tmp_file.txt`),
+      ).rejects.toThrow(AppError);
+      await expect(
+        unknownStorage.renameObject(`${uuid}_tmp_file.txt`, `new_tmp_file.txt`),
+      ).rejects.toThrow('unknown is unknown storage type');
+    });
+
+    it('should rename object', async () => {
+      const uuid = uuidv4();
+      await fs.promises.writeFile(
+        path.join(LOCAL_STORAGE_PATH, `${uuid}_tmp_file.txt`),
+        'john doe',
+      );
+
+      const object = await storage.renameObject(
+        `${uuid}_tmp_file.txt`,
+        'new_tmp_file.txt',
+      );
+
+      expect(object).toEqual({
+        url: `http://localhost:3333/bucket/${uuid}_new_tmp_file.txt`,
+        thumbnail: null,
+        fileName: 'new_tmp_file.txt',
+        fileId: `${uuid}_new_tmp_file.txt`,
+      });
+      expect(
+        fs.existsSync(path.join(LOCAL_STORAGE_PATH, `${uuid}_tmp_file.txt`)),
+      ).toBeFalsy();
+      expect(
+        fs.existsSync(
+          path.join(LOCAL_STORAGE_PATH, `${uuid}_new_tmp_file.txt`),
+        ),
+      ).toBeTruthy();
+
+      fs.unlinkSync(path.join(LOCAL_STORAGE_PATH, `${uuid}_new_tmp_file.txt`));
+    });
+
+    it('should rename object with thumbnail', async () => {
+      const uuid = uuidv4();
+      await fs.promises.copyFile(
+        path.join(__dirname, 'image.png'),
+        path.join(LOCAL_STORAGE_PATH, `${uuid}_tmp_image.png`),
+      );
+
+      const thumb = await storage.generateThumbnail(
+        fs.readFileSync(path.join(__dirname, 'image.png')),
+      );
+      await fs.promises.writeFile(
+        path.join(LOCAL_STORAGE_PATH, `${uuid}_tmp_image_thumb.png`),
+        thumb,
+      );
+
+      const object = await storage.renameObject(
+        `${uuid}_tmp_image.png`,
+        'new_tmp_image.png',
+      );
+
+      expect(object).toEqual({
+        url: `http://localhost:3333/bucket/${uuid}_new_tmp_image.png`,
+        thumbnail: `http://localhost:3333/bucket/${uuid}_new_tmp_image_thumb.png`,
+        fileName: 'new_tmp_image.png',
+        fileId: `${uuid}_new_tmp_image.png`,
+      });
+      expect(
+        fs.existsSync(
+          path.join(LOCAL_STORAGE_PATH, `${uuid}_new_tmp_image.png`),
+        ),
+      ).toBeTruthy();
+      expect(
+        fs.existsSync(
+          path.join(LOCAL_STORAGE_PATH, `${uuid}_new_tmp_image_thumb.png`),
+        ),
+      ).toBeTruthy();
+      expect(
+        fs.existsSync(path.join(LOCAL_STORAGE_PATH, `${uuid}_tmp_image.png`)),
+      ).toBeFalsy();
+      expect(
+        fs.existsSync(
+          path.join(LOCAL_STORAGE_PATH, `${uuid}_tmp_image_thumb.png`),
+        ),
+      ).toBeFalsy();
+
+      fs.unlinkSync(path.join(LOCAL_STORAGE_PATH, `${uuid}_new_tmp_image.png`));
+      fs.unlinkSync(
+        path.join(LOCAL_STORAGE_PATH, `${uuid}_new_tmp_image_thumb.png`),
+      );
     });
   });
 });
