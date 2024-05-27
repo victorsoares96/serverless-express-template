@@ -1,7 +1,7 @@
 {
   "name": "serverless-express-template",
   "version": "0.0.1",
-  "templateVersion": "1.6.0",
+  "templateVersion": "1.7.1",
   "description": "A template for serverless-express",
   "main": "./lambda.js",
   "type": "commonjs",
