@@ -60,7 +60,7 @@
     "bcryptjs": "2.4.3",
     "body-parser": "1.20.2",
     "celebrate": "15.0.3",
-    "class-validator": "0.14.0",
+    "class-validator": "0.14.1",
     "compression": "1.7.4",
     "config": "3.3.11",
     "cors": "2.8.5",
