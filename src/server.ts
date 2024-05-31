@@ -52,7 +52,7 @@ class Server {
     this.express.use(express.json({ limit: '5mb' }));
     this.express.use(express.urlencoded({ limit: '5mb', extended: true }));
 
-    this.getProjectVersion();
+    if (!isLambda()) this.getProjectVersion();
   }
 
   private getProjectVersion(): void {
