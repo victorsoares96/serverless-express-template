@@ -1,14 +1,14 @@
 {
-  "name": "serverless-express-template",
+  "name": "backend-template",
   "version": "0.0.1",
   "templateVersion": "1.7.1",
-  "description": "A template for serverless-express",
+  "description": "A template for backend",
   "main": "./lambda.js",
   "type": "commonjs",
   "config": {
-    "s3BucketName": "serverless-express-template-bucket",
+    "s3BucketName": "backend-template-bucket",
     "region": "us-east-1",
-    "cloudFormationStackName": "serverless-express-template-stack",
+    "cloudFormationStackName": "backend-template-stack",
     "functionName": "",
     "domain": "",
     "commitizen": {

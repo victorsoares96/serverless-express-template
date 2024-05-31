@@ -5,7 +5,7 @@
     "port": 3306,
     "username": "root",
     "password": "password",
-    "name": "serverless_express_template.db"
+    "name": "database.db"
   },
   "s3": {
     "AWS_ACCESS_KEY_ID": "",
