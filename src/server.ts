@@ -67,16 +67,13 @@ class Server {
 
     let packageJson: { version: string; templateVersion: string };
 
-    if (
-      process.env.NODE_ENV === 'development' ||
-      process.env.NODE_ENV === 'staging'
-    ) {
+    if (fs.existsSync(path.resolve(__dirname, 'package.json'))) {
       packageJson = JSON.parse(
-        fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf8'),
+        fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8'),
       );
     } else {
       packageJson = JSON.parse(
-        fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8'),
+        fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf8'),
       );
     }
 

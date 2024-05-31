@@ -45,7 +45,7 @@
     "delete-bucket": "cross-var aws s3 rb s3://$npm_package_config_s3BucketName --region $npm_package_config_region",
     "delete-stack": "cross-var aws cloudformation delete-stack --stack-name $npm_package_config_cloudFormationStackName --region $npm_package_config_region",
     "invoke-lambda": "cross-var aws lambda invoke --function-name $npm_package_config_functionName --region $npm_package_config_region --cli-binary-format raw-in-base64-out --payload file://api-gateway-event.json lambda-invoke-response.json && cat lambda-invoke-response.json",
-    "local": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules scripts/local",
+    "local": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/scripts/local",
     "sam:build": "sam build --template ./sam-template.yaml",
     "sam:deploy": "cross-var sam deploy --stack-name $npm_package_config_cloudFormationStackName --capabilities CAPABILITY_IAM --s3-bucket $npm_package_config_s3BucketName --s3-prefix $npm_package_name --parameter-overrides ParameterKey=DomainName,ParameterValue=$npm_package_config_domain --region $npm_package_config_region --no-fail-on-empty-changeset",
     "package-deploy": "npm run build && npm run sam:build && npm run sam:deploy",
