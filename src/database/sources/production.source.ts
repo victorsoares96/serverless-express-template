@@ -16,7 +16,9 @@ const productionDataSource = new DataSource({
   },
   logging: false,
   entities: [`${path.resolve(__dirname, '..', '..')}/entities/*.{js,ts}`],
-  migrations: [`${path.resolve(__dirname, '..')}/migrations/migrations-*.{js,ts}`],
+  migrations: [
+    `${path.resolve(__dirname, '..')}/migrations/*-migrations.{js,ts}`,
+  ],
   subscribers: [],
 });
 
