@@ -23,7 +23,7 @@ Resources:
     Properties:
       Environment:
         Variables:
-          NODE_ENV: production
+          NODE_ENV: staging
       CodeUri: ./dist
       PackageType: Zip
       Runtime: nodejs20.x

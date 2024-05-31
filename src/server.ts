@@ -53,6 +53,10 @@ class Server {
     this.express.use(express.urlencoded({ limit: '5mb', extended: true }));
 
     if (!isLambda()) this.getProjectVersion();
+
+    this.routeLevelMiddlewares();
+    this.routes();
+    this.errorHandlerMiddlewares();
   }
 
   private getProjectVersion(): void {
@@ -120,10 +124,6 @@ class Server {
     this.connection = connection;
 
     this.server = await this.createServer();
-
-    this.routeLevelMiddlewares();
-    this.routes();
-    this.errorHandlerMiddlewares();
 
     if (port) this.PORT = port;
     this.server.listen(port);
