@@ -1,7 +1,7 @@
 {
   "name": "backend-template",
   "version": "0.0.1",
-  "templateVersion": "1.7.1",
+  "templateVersion": "1.7.2",
   "description": "A template for backend",
   "main": "./lambda.js",
   "type": "commonjs",
